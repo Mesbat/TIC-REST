@@ -1,0 +1,38 @@
+{
+  "name": "tic-rest",
+  "version": "1.0.0",
+  "description": "NodeJS 8.9.4 Restful API Using a Crowding MYSQL Database",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\"",
+    "build": "rm -rf dist && ./node_modules/typescript/bin/tsc",
+    "start": "npm run build && ./node_modules/eslint/bin/eslint.js app && ./node_modules/nodemon/bin/nodemon.js dist/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Mesbat/TIC-REST.git"
+  },
+  "keywords": [
+    "NodeJS",
+    "Yacine",
+    "Mesbat",
+    "Restful",
+    "API"
+  ],
+  "author": "Yacine MESBAT",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Mesbat/TIC-REST/issues"
+  },
+  "homepage": "https://github.com/Mesbat/TIC-REST#readme",
+  "dependencies": {
+    "ajv": "^6.2.0",
+    "eslint": "^4.18.1",
+    "express": "^4.16.2",
+    "mysql": "^2.15.0",
+    "nodemon": "^1.17.1",
+    "tsc": "^1.20150623.0",
+    "typescript": "^2.7.2",
+    "typescript-eslint-parser": "^14.0.0"
+  }
+}
