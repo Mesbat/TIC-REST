@@ -1,0 +1,13 @@
+{
+  "type": "mysql",
+  "host": "localhost",
+  "port": 3306,
+  "username": "root",
+  "password": "pass",
+  "database": "etna-crowding",
+  "synchronize": true,
+  "entities": ["app/models/*.js"],
+  "cli": {
+    "entitiesDir": "app/models"
+  }
+}
