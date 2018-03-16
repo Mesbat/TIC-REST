@@ -4,7 +4,7 @@
   "port": 3306,
   "username": "root",
   "password": "pass",
-  "database": "etna-crowding",
+  "database": "etna_crowding",
   "synchronize": true,
   "entities": ["app/models/*.js"],
   "cli": {

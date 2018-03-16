@@ -1,5 +1,17 @@
 import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
 
+/**
+ * Domain Model
+ *    - id: number
+ *    - name: string
+ *    - description: string
+ *    - slug: string
+ *    - created_at: string
+ *
+ * @export
+ * @class Domain
+ */
+
 @Entity()
 export class Domain {
   @PrimaryGeneratedColumn() id!: number;
