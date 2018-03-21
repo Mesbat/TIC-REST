@@ -8,10 +8,11 @@ class Domains extends Routes {
     super("/domains(/:name)?.:format");
 
     this._router.route(this.routeUri).get(async (request, response) => {
-      if (!request.params.name)
-        response.json(await DomainsController.getDomains(request, response));
-      else
-        response.json("name");
+      if (!request.params.name) {
+        let json = await DomainsController.getDomains(request, response);
+        response.status(json.code).json(json);
+      } else
+        response.status(400).json({ code: 400, message: "bad request", datas: [] });
     });
   }
 

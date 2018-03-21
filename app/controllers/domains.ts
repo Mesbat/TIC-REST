@@ -7,16 +7,16 @@ class DomainsController {
     if (request.params.format === "json")
       try {
         return {
-          code: "200",
+          code: 200,
           message: "success",
           datas: await getManager()
             .getRepository(Domain)
-            .find({ select: ["id", "slug", "name", "description", "langs"] })
+            .find({ select: ["id", "slug", "name", "description"] })
         };
       } catch (err) {
         return err;
       }
-    else return { code: "400", message: "bad request", datas: [] };
+    else return { code: 400, message: "bad request", datas: [] };
   }
 }
 
