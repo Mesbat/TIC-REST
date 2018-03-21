@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\"",
-    "build": "rm -rf dist && ./node_modules/typescript/bin/tsc",
-    "start": "npm run build && ./node_modules/eslint/bin/eslint.js app && ./node_modules/nodemon/bin/nodemon.js dist/app.js"
+    "build": "sudo rm -rf dist && sudo ./node_modules/typescript/bin/tsc",
+    "start": "sudo npm run build && sudo ./node_modules/eslint/bin/eslint.js app && sudo ./node_modules/nodemon/bin/nodemon.js dist/app.js"
   },
   "repository": {
     "type": "git",
