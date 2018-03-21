@@ -35,5 +35,5 @@ createConnection().then(connection => {
     });
 
     // Starting Node Server
-    app.listen(3000, () => console.log(`${clc.green('Server Successfully started on port')} ${clc.blue('3000')}`));
+    app.listen(80, () => console.log(`${clc.green('Server Successfully started on port')} ${clc.blue('80')}`));
 }, error => console.log(clc.red("TypeORM Error: " + error)));
