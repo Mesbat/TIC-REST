@@ -27,6 +27,13 @@ createConnection().then(connection => {
     // Routes
     app.use(Domains.endpoint(), Domains.routes());
 
+    app.use((request: Request, response: Response) => {
+        response.status(404).json({
+            code: response.statusCode,
+            message: 'not found'
+        });
+    });
+
     // Starting Node Server
     app.listen(3000, () => console.log(`${clc.green('Server Successfully started on port')} ${clc.blue('3000')}`));
 }, error => console.log(clc.red("TypeORM Error: " + error)));

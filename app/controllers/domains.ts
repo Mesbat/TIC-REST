@@ -17,7 +17,7 @@ class DomainsController {
       } catch (err) {
         return err;
       }
-    else return { code: "400", message: "Bad Request", datas: [] };
+    else return { code: "400", message: "bad request", datas: [] };
   }
 }
 
