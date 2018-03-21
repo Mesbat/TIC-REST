@@ -1,13 +1,17 @@
 import { Routes } from "./routes";
+import { getManager } from "typeorm";
 import DomainsController from "../controllers/domains";
 import * as express from "express";
 
 class Domains extends Routes {
   constructor() {
-    super("/domains.:format");
+    super("/domains(/:name)?.:format");
 
     this._router.route(this.routeUri).get(async (request, response) => {
-      response.json(await DomainsController.getDomains(request, response));
+      if (!request.params.name)
+        response.json(await DomainsController.getDomains(request, response));
+      else
+        response.json("name");
     });
   }
 

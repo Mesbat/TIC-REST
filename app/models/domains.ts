@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable } from "typeorm";
+import { Lang } from "./lang";
 
 @Entity()
 export class Domain {
@@ -13,4 +14,18 @@ export class Domain {
   @Column("longtext") description!: string;
 
   @Column("datetime") created_at!: string;
+
+  @ManyToMany(type => Lang)
+  @JoinTable({
+    name: "domain_lang",
+    joinColumn: {
+      name: "domain_id",
+      referencedColumnName: "id"
+    },
+    inverseJoinColumn: {
+      name: "lang_id",
+      referencedColumnName: "code"
+    }
+  })
+  langs!: Lang[];
 }

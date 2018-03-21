@@ -1,4 +1,3 @@
-import * as express from "express";
 import { Request, Response } from "express";
 import { getManager } from "typeorm";
 import { Domain } from "../models/domains";
@@ -12,7 +11,7 @@ class DomainsController {
           message: "success",
           datas: await getManager()
             .getRepository(Domain)
-            .find({ select: ["id", "slug", "name", "description"] })
+            .find({ select: ["id", "slug", "name", "description", "langs"] })
         };
       } catch (err) {
         return err;
