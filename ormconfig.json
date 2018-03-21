@@ -6,8 +6,8 @@
   "password": "pass",
   "database": "etna_crowding",
   "synchronize": true,
-  "entities": ["app/models/*.js"],
+  "entities": ["dist/models/*.js"],
   "cli": {
-    "entitiesDir": "app/models"
+    "entitiesDir": "dist/models"
   }
 }
