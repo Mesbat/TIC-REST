@@ -7,9 +7,6 @@ export class Domain {
   @PrimaryGeneratedColumn() id!: number;
 
   @Index({ unique: true })
-  @Column("int") user_id!: string;
-
-  @Index({ unique: true })
   @Column("varchar") slug!: string;
 
   @Column("varchar") name!: string;
@@ -32,6 +29,7 @@ export class Domain {
   })
   langs!: Lang[];
 
+  @Index()
   @ManyToOne(type => User)
   @JoinColumn({name: 'user_id'})
   creator!: User

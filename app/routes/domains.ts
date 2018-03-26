@@ -13,7 +13,7 @@ class Domains extends Routes {
         response.status(json.code).json(json);
       } catch (error) {
         console.log(error);
-        response.status(400).json(error);
+        response.status(400);
       }
     });
   }

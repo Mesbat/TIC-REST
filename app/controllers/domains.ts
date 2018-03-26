@@ -14,7 +14,7 @@ class DomainsController {
             .find({ select: ["id", "slug", "name", "description"] })
         };
       } catch (err) {
-        return err;
+          return { code: 500, message: "internal server error", datas: err };
       }
     else return { code: 400, message: "bad request", datas: [] };
   }
@@ -35,7 +35,7 @@ class DomainsController {
             .getMany()
         };
       } catch (err) {
-        return err;
+        return { code: 500, message: "internal server error", datas: err };
       }
     else return { code: 400, message: "bad request", datas: [] };
   }
