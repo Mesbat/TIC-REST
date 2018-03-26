@@ -35,7 +35,7 @@ class DomainsController {
           code: 200,
           message: "success",
           datas: {
-            langs: queryResult[0].langs.map((lang) => { return lang.code }),
+            langs: queryResult[0].langs.map(lang => lang.code),
             id: queryResult[0].id,
             slug: queryResult[0].slug,
             name: queryResult[0].name,
