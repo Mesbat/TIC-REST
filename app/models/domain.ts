@@ -4,17 +4,6 @@ import { User } from "./user";
 
 @Entity()
 export class Domain {
-  @PrimaryGeneratedColumn() id!: number;
-
-  @Index({ unique: true })
-  @Column("varchar") slug!: string;
-
-  @Column("varchar") name!: string;
-
-  @Column("longtext") description!: string;
-
-  @Column("datetime") created_at!: string;
-
   @ManyToMany(type => Lang)
   @JoinTable({
     name: "domain_lang",
@@ -29,8 +18,19 @@ export class Domain {
   })
   langs!: Lang[];
 
+  @PrimaryGeneratedColumn() id!: number;
+
+  @Index({ unique: true })
+  @Column("varchar") slug!: string;
+
+  @Column("varchar") name!: string;
+
+  @Column("longtext") description!: string;
+
   @Index()
   @ManyToOne(type => User)
   @JoinColumn({name: 'user_id'})
   creator!: User
+
+  @Column("datetime") created_at!: Date;
 }
