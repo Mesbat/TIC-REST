@@ -45,7 +45,7 @@ class DomainsController {
           }
         };
       } catch (err) {
-        return { code: 500, message: "internal server error", datas: err };
+        return (await getManager().getRepository(Domain).count({ name: request.params.name }) ? { code: 500, message: "internal server error", datas: err } : { code: 404, message: "not found" });
       }
     else return { code: 400, message: "bad request", datas: [] };
   }

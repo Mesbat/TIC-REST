@@ -12,8 +12,7 @@ class Domains extends Routes {
         let json = request.params.name ? await DomainsController.show(request, response) : await DomainsController.index(request, response);
         response.status(json.code).json(json);
       } catch (error) {
-        console.log(error);
-        response.status(400);
+        response.status(400).json(error);
       }
     });
   }
