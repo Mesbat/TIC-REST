@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable, JoinColumn, ManyToOne, Index } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable, JoinColumn, Index, ManyToOne } from "typeorm";
 import { Lang } from "./lang";
 import { User } from "./user";
 
