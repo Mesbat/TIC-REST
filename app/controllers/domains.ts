@@ -72,7 +72,7 @@ class DomainsController {
 
   public async showDomainTranslations(request: Request, response: Response) {
     if (request.params.format === "json") {
-      if (!(await getManager().getRepository(Domain).count({ name: request.params.name })))
+      if ((await getManager().getRepository(Domain).count({ name: request.params.name })) === 0)
         return ({ code: 404, message: "not found" });
         
       let queryResult = await getManager()
