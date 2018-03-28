@@ -21,7 +21,7 @@ createConnection().then(connection => {
 
     // Info Route
     app.get("/about", (request: Request, response: Response) => {
-        response.json({ Application: 'TIC-REST', Author: 'Mesbat_y', Version: 0.01 });
+        response.json({ Application: 'TIC-REST', Author: 'Mesbat_y', Version: 0.03 });
     });
 
     // Routes

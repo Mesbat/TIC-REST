@@ -72,6 +72,9 @@ class DomainsController {
 
   public async showDomainTranslations(request: Request, response: Response) {
     if (request.params.format === "json") {
+      if (!(await getManager().getRepository(Domain).count({ name: request.params.name })))
+        return ({ code: 404, message: "not found" });
+        
       let queryResult = await getManager()
         .createQueryBuilder(Translation, "translation")
         .leftJoin("translation.domain", "domain")
@@ -99,7 +102,12 @@ class DomainsController {
 
   private showTranslationFormatter(queryResult: Translation[]) {
     let jsonResponse = queryResult.map(translation => {
-      let row : showTranslationFormat = { id: translation.id, code: translation.code, trans: { ok: "test", nono: "ok" } }
+      let row: showTranslationFormat = { trans: {}, id: translation.id, code: translation.code }
+
+      translation.domain.langs.forEach(lang => {
+        let translatedValue = translation.translatedValues.find(x => x.lang.code === lang.code);
+        row.trans[lang.code] = translatedValue ? translatedValue.trans : translation.code;
+      });
 
       return (row);
     });
