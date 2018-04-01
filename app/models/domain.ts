@@ -29,7 +29,7 @@ export class Domain {
 
   @Index()
   @ManyToOne(type => User)
-  @JoinColumn({name: 'user_id'})
+  @JoinColumn({ name: 'user_id' })
   creator!: User
 
   @Column("datetime") created_at!: Date;

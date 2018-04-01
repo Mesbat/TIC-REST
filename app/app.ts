@@ -10,13 +10,15 @@ import * as morgan from 'morgan';
 
 // Routers
 import Domains from "./routes/domains";
+import Translations from "./routes/translations";
 
 createConnection().then(connection => {
     // Initializing Express App
     const app = express();
-    app.use(bodyParser.json());
 
     // Middlewares
+    app.use(bodyParser.json());
+    app.use(express.urlencoded({ extended: true }));
     app.use(morgan('dev'));
 
     // Info Route
@@ -26,14 +28,16 @@ createConnection().then(connection => {
 
     // Routes
     app.use(Domains.endpoint(), Domains.routes());
+    app.use(Translations.endpoint(), Translations.routes());
 
     app.use((request: Request, response: Response) => {
         response.status(404).json({
             code: response.statusCode,
-            message: 'not found'
+            message: 'not found',
+            uri: request.url
         });
     });
 
     // Starting Node Server
-    app.listen(80, () => console.log(`${clc.green('Server Successfully started on port')} ${clc.blue('80')}`));
+    app.listen(3000, () => console.log(`${clc.green('Server Successfully started on port')} ${clc.blue('3000')}`));
 }, error => console.log(clc.red("TypeORM Error: " + error)));

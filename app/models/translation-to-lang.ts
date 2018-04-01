@@ -7,12 +7,12 @@ import { Lang } from "./lang";
 export class TranslationToLang {
   @Index()
   @ManyToOne(type => Translation, translation => translation.translatedValues, { primary: true })
-  @JoinColumn({name: 'translation_id'})
+  @JoinColumn({ name: 'translation_id' })
   translation!: Translation
 
   @Index()
   @ManyToOne(type => Lang, { primary: true })
-  @JoinColumn({name: 'lang_id'})
+  @JoinColumn({ name: 'lang_id' })
   lang!: Lang
 
   @Column("longtext") trans!: string;

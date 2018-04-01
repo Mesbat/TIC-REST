@@ -26,7 +26,7 @@ class DomainsController {
     else return { code: 400, message: "bad request", datas: [] };
   }
 
-  public async showDomain(request: Request, response: Response) {
+  public async show(request: Request, response: Response) {
     if (request.params.format === "json")
       try {
         let queryResult = await getManager()
@@ -68,51 +68,6 @@ class DomainsController {
           : { code: 404, message: "not found" };
       }
     else return { code: 400, message: "bad request", datas: [] };
-  }
-
-  public async showDomainTranslations(request: Request, response: Response) {
-    if (request.params.format === "json") {
-      if (!(await getManager().getRepository(Domain).count({ name: request.params.name })))
-        return ({ code: 404, message: "not found" });
-        
-      let queryResult = await getManager()
-        .createQueryBuilder(Translation, "translation")
-        .leftJoin("translation.domain", "domain")
-        .leftJoin("domain.langs", "langs")
-        .leftJoin("translation.translatedValues", "translatedValues")
-        .leftJoin("translatedValues.lang", "lang")
-        .where("domain.name = :name")
-        .setParameter("name", request.params.name)
-        .select([
-          "translation.id",
-          "translation.code",
-          "translatedValues.trans",
-          "lang.code",
-          "langs.code"
-        ])
-        .getMany();
-
-      return {
-        code: 200,
-        message: "success",
-        datas: this.showTranslationFormatter(queryResult)
-      };
-    } else return { code: 400, message: "bad request", datas: [] };
-  }
-
-  private showTranslationFormatter(queryResult: Translation[]) {
-    let jsonResponse = queryResult.map(translation => {
-      let row: showTranslationFormat = { trans: {}, id: translation.id, code: translation.code }
-
-      translation.domain.langs.forEach(lang => {
-        let translatedValue = translation.translatedValues.find(x => x.lang.code === lang.code);
-        row.trans[lang.code] = translatedValue ? translatedValue.trans : translation.code;
-      });
-
-      return (row);
-    });
-
-    return (jsonResponse);
   }
 }
 

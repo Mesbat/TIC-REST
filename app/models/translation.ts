@@ -8,12 +8,15 @@ export class Translation {
 
   @Index()
   @ManyToOne(type => Domain)
-  @JoinColumn({name: 'domain_id'})
+  @JoinColumn({ name: 'domain_id' })
   domain!: Domain
 
   @Index({ unique: true })
   @Column("varchar") code!: string;
 
-  @OneToMany(type => TranslationToLang, translatedValues => translatedValues.translation)
+  @OneToMany(type => TranslationToLang, translatedValues => translatedValues.translation, {
+    cascadeInsert: true,
+    cascadeUpdate: true
+  })
   translatedValues!: TranslationToLang[];
 }
