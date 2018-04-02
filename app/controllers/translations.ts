@@ -1,3 +1,4 @@
+
 import { Request, Response } from "express";
 import { getManager } from "typeorm";
 import { Domain } from "../models/domain";
@@ -48,6 +49,21 @@ class TranslationsController {
 
         if (!(auth instanceof Domain))
             return (auth);
+
+        if (request.body.code.length < 2)
+            return ({ code: 400, message: "bad request", datas: `translation code is too short` });
+
+        for (var lang in request.body.trans) {
+            let unregisteredLang: any = lang;
+
+            auth.langs.forEach(registeredLang => {
+                if (registeredLang.code === lang)
+                    unregisteredLang = false;
+            });
+
+            if (unregisteredLang)
+                return ({ code: 400, message: "bad request", datas: `[${unregisteredLang}] is not a registered language` });
+        }
 
         let translation = new Translation();
         translation.code = request.body.code;
