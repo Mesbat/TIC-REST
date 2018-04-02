@@ -72,7 +72,7 @@ class TranslationsController {
             let translatedValue = new TranslationToLang();
             translatedValue.lang = lang;
             translatedValue.translation = translation;
-            translatedValue.trans = request.body.trans[lang.code] || translation.code;
+            translatedValue.trans = (request.body.trans && request.body.trans[lang.code]) || translation.code;
 
             return (translatedValue);
         });
