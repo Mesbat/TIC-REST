@@ -33,8 +33,7 @@ createConnection().then(connection => {
     app.use((request: Request, response: Response) => {
         response.status(404).json({
             code: response.statusCode,
-            message: 'not found',
-            uri: request.url
+            message: 'not found'
         });
     });
 
