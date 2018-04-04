@@ -6,7 +6,7 @@ import { Lang } from "./lang";
 @Entity()
 export class TranslationToLang {
   @Index()
-  @ManyToOne(type => Translation, translation => translation.translatedValues, { primary: true })
+  @ManyToOne(type => Translation, translation => translation.translatedValues, { primary: true, onDelete: 'CASCADE' })
   @JoinColumn({ name: 'translation_id' })
   translation!: Translation
 

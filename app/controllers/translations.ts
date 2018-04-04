@@ -180,14 +180,28 @@ class TranslationsController {
 
   public async delete(request: Request, response: Response) {
     let auth = await Auth.domainAuth(request);
-    let translation = await getManager().getRepository(Translation).findOneById(request.params.id);
 
     if (request.params.format !== "json")
       return { code: 400, message: "bad request", datas: [] };
 
     if (!(auth instanceof Domain)) return auth;
 
-    return { code: 200, message: "success", datas: { id: request.params.id }};
+    if (
+      !await getManager()
+        .getRepository(Translation)
+        .count({ id: request.params.id })
+    )
+      return { code: 404, message: "not found" };
+
+    await getManager()
+      .getRepository(Translation)
+      .deleteById(request.params.id);
+
+    return {
+      code: 200,
+      message: "success",
+      datas: { id: request.params.id }
+    };
   }
 
   private showTranslationFormatter(queryResult: Translation[]) {
