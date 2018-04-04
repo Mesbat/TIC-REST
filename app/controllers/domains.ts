@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { getManager } from "typeorm";
 import { Domain } from "../models/domain";
 import { Translation } from "../models/translation";
+import Auth from "../services/auth";
 
 interface showTranslationFormat {
   id: number,
@@ -29,6 +30,8 @@ class DomainsController {
   public async show(request: Request, response: Response) {
     if (request.params.format === "json")
       try {
+        let auth = await Auth.domainAuth(request);
+
         let queryResult = await getManager()
           .createQueryBuilder(Domain, "domain")
           .leftJoin("domain.creator", "creator")
@@ -43,6 +46,7 @@ class DomainsController {
             "domain.description",
             "creator.id",
             "creator.username",
+            "creator.email",
             "domain.created_at"
           ])
           .getMany();
@@ -56,7 +60,11 @@ class DomainsController {
             slug: queryResult[0].slug,
             name: queryResult[0].name,
             description: queryResult[0].description,
-            creator: queryResult[0].creator,
+            creator: {
+              id: queryResult[0].creator.id,
+              username: queryResult[0].creator.username,
+              email: auth instanceof Domain ? queryResult[0].creator.email : undefined,
+            },
             created_at: queryResult[0].created_at.toISOString()
           }
         };
