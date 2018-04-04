@@ -25,6 +25,24 @@ class Translations extends Routes {
         response.status(400).json({ code: 400, message: "bad request", datas: error.code === 'ER_DUP_ENTRY' ? 'translation already registered' : error.message });
       }
     });
+
+    this._router.route(`${this.routeUri}/:name/translations/:id.:format`).put(async (request, response) => {
+      try {
+        let json = await TranslationsController.put(request, response);
+        response.status(json.code).json(json);
+      } catch (error) {
+        response.status(400).json({ code: 400, message: "bad request", datas: error.code === 'ER_DUP_ENTRY' ? 'translation already registered' : error.message });
+      }
+    });
+
+    this._router.route(`${this.routeUri}/:name/translations/:id.:format`).delete(async (request, response) => {
+      try {
+        let json = await TranslationsController.delete(request, response);
+        response.status(json.code).json(json);
+      } catch (error) {
+        response.status(400).json({ code: 400, message: "bad request", datas: error.message });
+      }
+    });
   }
 
   public routes(): express.Router {

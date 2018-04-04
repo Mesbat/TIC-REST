@@ -100,6 +100,96 @@ class TranslationsController {
     };
   }
 
+  public async put(request: Request, response: Response) {
+    let auth = await Auth.domainAuth(request);
+    let translation =
+      (await getManager()
+        .getRepository(Translation)
+        .findOneById(request.params.id, {
+          relations: [
+            "translatedValues",
+            "translatedValues.lang",
+            "domain",
+            "domain.langs"
+          ]
+        })) || false;
+
+    if (request.params.format !== "json")
+      return { code: 400, message: "bad request", datas: [] };
+
+    if (!(auth instanceof Domain)) return auth;
+
+    if (!(translation instanceof Translation))
+      return { code: 404, message: "not found" };
+
+    if (!(request.body.trans instanceof Object))
+      return {
+        code: 400,
+        message: "bad request",
+        datas: "no given translations"
+      };
+
+    for (var lang in request.body.trans) {
+      let unregisteredLang: any = lang;
+
+      auth.langs.forEach(registeredLang => {
+        if (registeredLang.code === lang) {
+          unregisteredLang = false;
+          if (translation instanceof Translation) {
+            if (!translation.translatedValues.find(x => x.lang.code === lang)) {
+              let translatedValue = new TranslationToLang();
+
+              translatedValue.lang = registeredLang;
+              translatedValue.translation = translation;
+              translatedValue.trans = translation.code;
+              translation.translatedValues.push(translatedValue);
+            }
+          }
+        }
+      });
+
+      if (unregisteredLang)
+        return {
+          code: 400,
+          message: "bad request",
+          datas: `[${unregisteredLang}] is not a registered language`
+        };
+    }
+
+    translation.translatedValues = translation.translatedValues.map(
+      translatedValue => {
+        translatedValue.trans =
+          request.body.trans[translatedValue.lang.code] ||
+          translatedValue.trans;
+
+        if (translation instanceof Translation)
+          translatedValue.translation = translation;
+
+        return translatedValue;
+      }
+    );
+
+    translation = await getManager().save(translation);
+
+    return {
+      code: 200,
+      message: "success",
+      datas: this.showTranslationFormatter([translation])[0]
+    };
+  }
+
+  public async delete(request: Request, response: Response) {
+    let auth = await Auth.domainAuth(request);
+    let translation = await getManager().getRepository(Translation).findOneById(request.params.id);
+
+    if (request.params.format !== "json")
+      return { code: 400, message: "bad request", datas: [] };
+
+    if (!(auth instanceof Domain)) return auth;
+
+    return { code: 200, message: "success", datas: { id: request.params.id }};
+  }
+
   private showTranslationFormatter(queryResult: Translation[]) {
     let jsonResponse = queryResult.map(translation => {
       let row: showTranslationFormat = {
