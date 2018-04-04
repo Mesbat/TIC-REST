@@ -36,13 +36,17 @@ class TranslationsController {
           "translatedValues.trans",
           "lang.code",
           "langs.code"
-        ])
-        .getMany();
+        ]);
+
+      if (request.query.code)
+        queryResult
+          .where("translation.code LIKE :code")
+          .setParameter("code", "%" + request.query.code + "%");
 
       return {
         code: 200,
         message: "success",
-        datas: this.showTranslationFormatter(queryResult)
+        datas: this.showTranslationFormatter(await queryResult.getMany())
       };
     } else return { code: 400, message: "bad request", datas: [] };
   }
