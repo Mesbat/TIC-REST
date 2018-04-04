@@ -25,6 +25,19 @@ class Auth {
             return (err);
         }
     }
+
+    public async simpleAuth(request: Request) {
+        try {
+            let user = await getManager().getRepository(User).findOne({ where: { password: request.headers.authorization } });
+
+            if (!user)
+                throw ({ code: 401, message: "unauthorized" });
+
+            return (user);
+        } catch (err) {
+            return (err);
+        }
+    }
 }
 
 export default new Auth();

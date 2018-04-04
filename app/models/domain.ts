@@ -1,10 +1,13 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable, JoinColumn, Index, ManyToOne } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable, JoinColumn, Index, ManyToOne, CreateDateColumn } from "typeorm";
 import { Lang } from "./lang";
 import { User } from "./user";
 
 @Entity()
 export class Domain {
-  @ManyToMany(type => Lang)
+  @ManyToMany(type => Lang, {
+    cascadeInsert: true,
+    cascadeUpdate: true
+  })
   @JoinTable({
     name: "domain_lang",
     joinColumn: {
@@ -32,5 +35,6 @@ export class Domain {
   @JoinColumn({ name: 'user_id' })
   creator!: User
 
-  @Column("datetime") created_at!: Date;
+  @CreateDateColumn({type: "timestamp"}) created_at!: Date;
+
 }

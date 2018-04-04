@@ -3,6 +3,8 @@ import { getManager } from "typeorm";
 import { Domain } from "../models/domain";
 import { Translation } from "../models/translation";
 import Auth from "../services/auth";
+import { User } from "../models/user";
+import { Lang } from "../models/lang";
 
 interface showTranslationFormat {
   id: number,
@@ -76,6 +78,56 @@ class DomainsController {
           : { code: 404, message: "not found" };
       }
     else return { code: 400, message: "bad request", datas: [] };
+  }
+
+  public async create(request: Request, response: Response) {
+    let auth = await Auth.simpleAuth(request);
+
+    if (request.params.format !== "json" || !request.body.name || !request.body.description || !request.body.lang || !(request.body.lang instanceof Array))
+      return { code: 400, message: "bad request", datas: [] };
+
+    if (!(auth instanceof User)) return auth;
+
+    let domain = new Domain();
+    domain.creator = auth;
+    domain.description = request.body.description;
+    domain.name = request.body.name;
+    domain.slug = request.body.name;
+    domain.langs = [];
+
+    let error;
+
+    request.body.lang.forEach(async (lang: string) => {
+      let language = await getManager().getRepository(Lang).findOne({ code: lang });
+
+      if (!(language instanceof Lang) || language === undefined)
+        error = `[${lang}] is not a registered language`
+      else
+        domain.langs.push(language);
+    });
+
+    if (error)
+      throw error;
+
+    domain = await getManager().save(domain);
+
+    return {
+      code: 200,
+      message: "success",
+      datas: {
+        langs: domain.langs.map(lang => lang.code),
+        id: domain.id,
+        slug: domain.slug,
+        name: domain.name,
+        description: domain.description,
+        creator: {
+          id: domain.creator.id,
+          username: domain.creator.username,
+          email: domain.creator.email
+        },
+        created_at: domain.created_at.toISOString()
+      }
+    };
   }
 }
 
