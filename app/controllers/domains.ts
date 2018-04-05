@@ -94,21 +94,22 @@ class DomainsController {
     domain.name = request.body.name;
     domain.slug = request.body.name;
     domain.langs = [];
+    domain.created_at = new Date();
 
-    let error;
+    let domainLangs = domain.langs;
 
-    request.body.lang.forEach(async (lang: string) => {
+    for (let lang of request.body.lang) {
       let language = await getManager().getRepository(Lang).findOne({ code: lang });
 
-      if (!(language instanceof Lang) || language === undefined)
-        error = `[${lang}] is not a registered language`
-      else
-        domain.langs.push(language);
-    });
+      if (!(language instanceof Lang) || language === undefined) {
+        throw `[${lang}] is not a registered language`
+      } else
+        domainLangs.push(language);
+    }
 
-    if (error)
-      throw error;
+    domain = await getManager().save(domain);
 
+    domain.langs = domainLangs;
     domain = await getManager().save(domain);
 
     return {
@@ -125,7 +126,7 @@ class DomainsController {
           username: domain.creator.username,
           email: domain.creator.email
         },
-        created_at: domain.created_at.toISOString()
+        created_at: domain.created_at
       }
     };
   }
