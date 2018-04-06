@@ -4,10 +4,7 @@ import { User } from "./user";
 
 @Entity()
 export class Domain {
-  @ManyToMany(type => Lang, {
-    cascadeInsert: true,
-    cascadeUpdate: true
-  })
+  @ManyToMany(type => Lang)
   @JoinTable({
     name: "domain_lang",
     joinColumn: {
@@ -35,6 +32,5 @@ export class Domain {
   @JoinColumn({ name: 'user_id' })
   creator!: User
 
-  @CreateDateColumn({type: "timestamp"}) created_at!: Date;
-
+  @CreateDateColumn({type: 'timestamp'}) created_at!: Date;
 }
