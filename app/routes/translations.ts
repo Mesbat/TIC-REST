@@ -7,7 +7,7 @@ class Translations extends Routes {
   constructor() {
     super("/domains");
 
-    this._router.route(`${this.routeUri}/:name/translations.:format`).get(async (request, response) => {
+    this._router.route(`${this.routeUri}/:slug/translations.:format`).get(async (request, response) => {
       try {
         let json = await TranslationsController.index(request, response);
         response.status(json.code).json(json);
@@ -17,7 +17,7 @@ class Translations extends Routes {
       }
     });
 
-    this._router.route(`${this.routeUri}/:name/translations.:format`).post(async (request, response) => {
+    this._router.route(`${this.routeUri}/:slug/translations.:format`).post(async (request, response) => {
       try {
         let json = await TranslationsController.create(request, response);
         response.status(json.code).json(json);
@@ -26,7 +26,7 @@ class Translations extends Routes {
       }
     });
 
-    this._router.route(`${this.routeUri}/:name/translations/:id.:format`).put(async (request, response) => {
+    this._router.route(`${this.routeUri}/:slug/translations/:id.:format`).put(async (request, response) => {
       try {
         let json = await TranslationsController.put(request, response);
         response.status(json.code).json(json);
@@ -35,7 +35,7 @@ class Translations extends Routes {
       }
     });
 
-    this._router.route(`${this.routeUri}/:name/translations/:id.:format`).delete(async (request, response) => {
+    this._router.route(`${this.routeUri}/:slug/translations/:id.:format`).delete(async (request, response) => {
       try {
         let json = await TranslationsController.delete(request, response);
         response.status(json.code).json(json);

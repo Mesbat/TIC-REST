@@ -11,6 +11,7 @@ import * as morgan from 'morgan';
 // Routers
 import Domains from "./routes/domains";
 import Translations from "./routes/translations";
+import Langs from "./routes/langs";
 
 createConnection().then(connection => {
     // Initializing Express App
@@ -23,12 +24,13 @@ createConnection().then(connection => {
 
     // Info Route
     app.get("/about", (request: Request, response: Response) => {
-        response.json({ Application: 'TIC-REST', Author: 'Mesbat_y', Version: 0.03 });
+        response.json({ Application: 'TIC-REST', Author: 'Mesbat_y', Version: 0.09 });
     });
 
     // Routes
     app.use(Domains.endpoint(), Domains.routes());
     app.use(Translations.endpoint(), Translations.routes());
+    app.use(Langs.endpoint(), Langs.routes());
 
     app.use((request: Request, response: Response) => {
         response.status(404).json({

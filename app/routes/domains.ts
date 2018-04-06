@@ -16,7 +16,7 @@ class Domains extends Routes {
       }
     });
 
-    this._router.route(`${this.routeUri}/:name.:format`).get(async (request, response) => {
+    this._router.route(`${this.routeUri}/:slug.:format`).get(async (request, response) => {
       try {
         let json = await DomainsController.show(request, response);
         response.status(json.code).json(json);

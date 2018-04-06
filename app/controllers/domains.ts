@@ -38,8 +38,8 @@ class DomainsController {
           .createQueryBuilder(Domain, "domain")
           .leftJoin("domain.creator", "creator")
           .leftJoin("domain.langs", "langs")
-          .where("domain.name = :name")
-          .setParameter("name", request.params.name)
+          .where("domain.slug = :slug")
+          .setParameter("slug", request.params.slug)
           .select([
             "langs.code",
             "domain.id",
@@ -73,7 +73,7 @@ class DomainsController {
       } catch (err) {
         return (await getManager()
           .getRepository(Domain)
-          .count({ name: request.params.name }))
+          .count({ slug: request.params.slug }))
           ? { code: 500, message: "internal server error", datas: err }
           : { code: 404, message: "not found" };
       }
@@ -88,11 +88,13 @@ class DomainsController {
 
     if (!(auth instanceof User)) return auth;
 
+    let sameNameCounter = await getManager().getRepository(Domain).count({name: request.body.name});
+
     let domain = new Domain();
     domain.creator = auth;
     domain.description = request.body.description;
     domain.name = request.body.name;
-    domain.slug = request.body.name;
+    domain.slug = sameNameCounter ? `${request.body.name.replace(/\s+/g, '-').toLowerCase()}-${sameNameCounter}` : request.body.name.replace(/\s+/g, '-').toLowerCase();
     domain.langs = [];
     domain.created_at = new Date();
 

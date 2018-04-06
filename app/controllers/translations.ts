@@ -18,7 +18,7 @@ class TranslationsController {
       if (
         !await getManager()
           .getRepository(Domain)
-          .count({ name: request.params.name })
+          .count({ slug: request.params.slug })
       )
         return { code: 404, message: "not found" };
 
@@ -28,8 +28,8 @@ class TranslationsController {
         .leftJoin("domain.langs", "langs")
         .leftJoin("translation.translatedValues", "translatedValues")
         .leftJoin("translatedValues.lang", "lang")
-        .where("domain.name = :name")
-        .setParameter("name", request.params.name)
+        .where("domain.slug = :slug")
+        .setParameter("slug", request.params.slug)
         .select([
           "translation.id",
           "translation.code",
@@ -52,7 +52,7 @@ class TranslationsController {
   }
 
   public async create(request: Request, response: Response) {
-    let auth = await Auth.domainAuth(request);
+    let auth = await Auth.slugAuth(request);
 
     if (request.params.format !== "json")
       return { code: 400, message: "bad request", datas: [] };
@@ -105,7 +105,7 @@ class TranslationsController {
   }
 
   public async put(request: Request, response: Response) {
-    let auth = await Auth.domainAuth(request);
+    let auth = await Auth.slugAuth(request);
     let translation =
       (await getManager()
         .getRepository(Translation)
@@ -183,7 +183,7 @@ class TranslationsController {
   }
 
   public async delete(request: Request, response: Response) {
-    let auth = await Auth.domainAuth(request);
+    let auth = await Auth.slugAuth(request);
 
     if (request.params.format !== "json")
       return { code: 400, message: "bad request", datas: [] };
