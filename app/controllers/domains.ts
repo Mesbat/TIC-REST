@@ -113,7 +113,7 @@ class DomainsController {
     domain = await getManager().save(domain);
 
     return {
-      code: 200,
+      code: 201,
       message: "success",
       datas: {
         langs: domain.langs.map(lang => lang.code),
