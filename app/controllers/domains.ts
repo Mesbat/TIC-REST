@@ -94,6 +94,7 @@ class DomainsController {
     domain.name = request.body.name;
     domain.slug = request.body.name;
     domain.langs = [];
+    domain.created_at = new Date();
 
     let domainLangs = domain.langs;
 

@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable, JoinColumn, Index, ManyToOne, CreateDateColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable, JoinColumn, Index, ManyToOne } from "typeorm";
 import { Lang } from "./lang";
 import { User } from "./user";
 
@@ -32,5 +32,5 @@ export class Domain {
   @JoinColumn({ name: 'user_id' })
   creator!: User
 
-  @CreateDateColumn() created_at!: Date;
+  @Column("datetime") created_at!: Date;
 }
