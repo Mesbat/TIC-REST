@@ -32,5 +32,5 @@ export class Domain {
   @JoinColumn({ name: 'user_id' })
   creator!: User
 
-  @CreateDateColumn({type: 'timestamp'}) created_at!: Date;
+  @CreateDateColumn() created_at!: Date;
 }
